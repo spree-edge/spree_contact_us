@@ -1,4 +1,6 @@
-class AddPhoneNumberToInquiries < ActiveRecord::Migration
+# frozen_string_literal: true
+
+class AddPhoneNumberToInquiries < ActiveRecord::Migration[4.2]
   def self.up
     add_column :inquiries, :phone_number, :string
   end

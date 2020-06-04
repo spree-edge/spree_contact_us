@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Spree
   class InquiriesController < Spree::StoreController
-    ssl_required
+    # ssl_required
 
     def new
       @inquiry = Inquiry.new
@@ -12,7 +14,7 @@ module Spree
       @inquiry.http_remote_addr = request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
 
       if validate_captcha && @inquiry.save
-        redirect_to contact_path, :notice => Spree.t(:on_send_message)
+        redirect_to contact_path, notice: Spree.t(:on_send_message)
       else
         render :new
       end
@@ -38,9 +40,7 @@ module Spree
 
         !response
       elsif Spree::ContactUsConfiguration[:use_honeypot]
-        unless params[:honey].blank?
-          flash[:captcha_error] = Spree.t('honeypot.error_message')
-        end
+        flash[:captcha_error] = Spree.t('honeypot.error_message') unless params[:honey].blank?
       end
     end
 
@@ -49,12 +49,11 @@ module Spree
     end
 
     def recaptcha_params
-        {
-          :model => @inquiry,
-          :message => Spree.t(:recaptcha_error_mes),
-          :private_key => Spree::ContactUsConfiguration[:recaptcha_private_key]
-        }
+      {
+        model: @inquiry,
+        message: Spree.t(:recaptcha_error_mes),
+        private_key: Spree::ContactUsConfiguration[:recaptcha_private_key]
+      }
     end
-
   end
 end

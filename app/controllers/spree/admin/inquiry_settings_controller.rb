@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Spree
   module Admin
     class InquirySettingsController < Spree::Admin::BaseController
@@ -8,7 +10,7 @@ module Spree
         Spree::ContactUsConfiguration.set(params[:captcha])
         # Set inquiry types
         params[:inquiry_types] = params[:inquiry_types].split(/,\s*/).map(&:to_sym)
-        Spree::ContactUsConfiguration.set(:inquiry_types => params[:inquiry_types])
+        Spree::ContactUsConfiguration.set(inquiry_types: params[:inquiry_types])
 
         respond_to do |format|
           format.html { redirect_to admin_inquiry_settings_path }

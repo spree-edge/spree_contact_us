@@ -1,4 +1,6 @@
-class CreateInquiries < ActiveRecord::Migration
+# frozen_string_literal: true
+
+class CreateInquiries < ActiveRecord::Migration[4.2]
   def self.up
     create_table :inquiries do |t|
       t.string :name
