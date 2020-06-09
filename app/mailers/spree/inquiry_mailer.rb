@@ -1,37 +1,35 @@
 # frozen_string_literal: true
 
 module Spree
-  class InquiryMailer < ActionMailer::Base
+  class InquiryMailer < BaseMailer
     def notification(inquiry)
       @inquiry = inquiry
+      @site_name = site_name
 
       mail(
-        to: site_owner_email,
+        to: from_address,
         reply_to: inquiry.email,
-        from: mail_from,
-        subject: "#{Spree::Config[:site_name]} #{Spree.t(:contact_form)}: #{inquiry.inquiry_type}"
+        from: from_address,
+        subject: "#{site_name}: #{inquiry.inquiry_type}"
       )
     end
 
     def confirmation(inquiry)
       @inquiry = inquiry
+      @site_name = site_name
 
       mail(
         to: inquiry.email,
-        reply_to: site_owner_email,
-        from: mail_from,
-        subject: "#{Spree::Config[:site_name]} #{Spree.t(:contact_form)}: #{inquiry.inquiry_type}"
+        reply_to: from_address,
+        from: from_address,
+        subject: "#{site_name}: #{inquiry.inquiry_type}"
       )
     end
 
     private
 
-    def mail_from
-      Spree::Config[:mails_from]
-    end
-
-    def site_owner_email
-      Spree::Config[:mails_from]
+    def site_name
+      Spree::Store.current.name
     end
   end
 end

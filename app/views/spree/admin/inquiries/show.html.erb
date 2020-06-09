@@ -1,37 +1,63 @@
-<h3>Inquiry submitted at <%= I18n.l @inquiry.created_at %></h3>
-<p>
-  <strong><%= Spree.t(:name) %>:</strong> <%= @inquiry.name %>
-</p>
-<p>
-  <strong><%= Spree.t(:email) %>:</strong> <%= mail_to "#{@inquiry.name} <#{@inquiry.email}>", @inquiry.email %>
-</p>
-<% unless @inquiry.phone_number.blank? %>
-<p>
-  <strong><%= Spree.t(:phone) %>:</strong> <%= @inquiry.phone_number %>
-</p>
+<% content_for :title do %>
+  <%= "Spree #{Spree.t('administration')}: #{Spree.t(:inquiry, scope: :inquiries)}" %>
 <% end %>
-<p>
-  <strong><%= Spree.t(:type) %>:</strong> <%= @inquiry.inquiry_type %>
-</p>
-<% unless @inquiry.order_no.blank? %>
-<p>
-  <strong><%= Spree.t(:order) %>:</strong> <%= @inquiry.order_no %>
-</p>
-<% end %>
-<p>
-  <strong><%= Spree.t(:message) %>:</strong> <%= h @inquiry.message %>
-</p>
 
-<p>
-  <strong><%= Spree.t(:ip_address) %>:</strong> <%= h @inquiry.http_remote_addr %>
-</p>
-<p>
-  <strong><%= Spree.t(:user_agent) %>:</strong> <%= h @inquiry.http_user_agent %>
-</p>
-<p>
-  <strong><%= Spree.t(:viewport_size) %>:</strong> <%= h @inquiry.client_viewport_size %>
-</p>
-<p>
-  <%= link_to Spree.t(:back), collection_url %> |
-  <%= link_to Spree.t(:delete), object_url, :confirm => Spree.t(:are_you_sure_delete), :method => :delete %>
-</p>
+<% content_for :page_title do %>
+  <%= Spree.t(:inquiry, scope: :inquiries) %>
+<% end %>
+
+<% content_for :page_actions do %>
+  <div class="row">
+    <div class="col-lg-6"></div>
+
+    <div class="col-lg-6 justify-content-between">
+      <%= button_link_to Spree.t(:back), collection_url, { class: 'btn-primary btn-sm' } %>
+      <%= link_to_delete @inquiry %>
+    </div>
+  </div>
+<% end %>
+
+<table class="table table-hover">
+  <tbody>
+    <tr>
+      <th scope="row"><%= Spree.t(:date) %>:</th>
+      <td><%= I18n.l @inquiry.created_at %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:name) %>:</th>
+      <td><%= @inquiry.name %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:email) %>:</th>
+      <td><%= mail_to "#{@inquiry.name} <#{@inquiry.email}>", @inquiry.email %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:phone) %>:</th>
+      <td><%= @inquiry.phone_number %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:type) %>:</th>
+      <td><%= @inquiry.inquiry_type %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:order) %>:</th>
+      <td><%= @inquiry.order_no %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:message) %>:</th>
+      <td><%= @inquiry.message %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:ip_address) %>:</th>
+      <td><%= @inquiry.http_remote_addr %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:user_agent) %>:</th>
+      <td><%= @inquiry.http_user_agent %></td>
+    </tr>
+    <tr>
+      <th scope="row"><%= Spree.t(:viewport_size) %>:</th>
+      <td><%= @inquiry.client_viewport_size %></td>
+    </tr>
+  </tbody>
+</table>

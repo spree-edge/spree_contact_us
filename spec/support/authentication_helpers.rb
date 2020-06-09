@@ -2,7 +2,6 @@
 
 module AuthenticationHelpers
   def sign_in_as!(user)
-    binding.pry
     visit '/login'
 
     fill_in 'spree_user_email', with: user.email
