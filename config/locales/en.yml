@@ -12,7 +12,7 @@ en:
       inquiries: Inquiries
       inquiries_settings: Inquiries Settings
       title: Contacts Us
-      sub_title: If you have any queries please contact us.
+      sub_title: If you have any queries or need advice, please feel free to contact us. Filling out the form below or e-mailing is the easiest way if the query is not too complicated or alternatively you can write or call us.
       contact_name: Your Name
       contact_email: Your Email Address
       contact_phone_number: Your Phone Number
@@ -20,6 +20,7 @@ en:
       inquiry_order_no: Order No.
       inquiry_message: Message
       contact_us: Contact Us
+      contact_inquiry_type: Inquiry Type
     contact_us: "Contacts"
     contact_form: "Contact Form"
     contact_name: "Your Name"

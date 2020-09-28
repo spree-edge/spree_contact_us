@@ -1,21 +1,19 @@
-<div class="container pt-5">
+<%- if @inquiry.errors.any? %>
   <div class="row">
     <div class="col-12">
       <%= render 'spree/shared/error_messages', target: @inquiry %>
     </div>
   </div>
-</div>
+<% end %>
 
-<div class="container py-5">
-  <div class="row">
-    <div class="col-lg-6">
-      <h1><%= Spree.t(:title, scope: :inquiries) %></h1>
-      <div class="pb-5"><%= Spree.t(:sub_title, scope: :inquiries) %></div>
+<div class="row px-3">
+  <div class="col-lg-6">
+    <h1><%= Spree.t(:title, scope: :inquiries) %></h1>
+    <div class="pb-5"><%= Spree.t(:sub_title, scope: :inquiries) %></div>
 
-      <%= form_for @inquiry do |f| %>
-        <%= render partial: 'form', locals: { f: f } %>
-      <% end %>
-    </div>
-    <div class="col-lg-6"></div>
+    <%= form_for @inquiry do |f| %>
+      <%= render partial: 'form', locals: { f: f } %>
+    <% end %>
   </div>
+  <div class="col-lg-6"></div>
 </div>
