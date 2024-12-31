@@ -9,8 +9,7 @@ en:
   spree:
     inquiries:
       inquiry: Inquiry
-      inquiries: Inquiries
-      inquiries_settings: Inquiries Settings
+      inquiry_settings: Inquiry settings
       title: Contacts Us
       sub_title: If you have any queries or need advice, please feel free to contact us. Filling out the form below or e-mailing is the easiest way if the query is not too complicated or alternatively you can write or call us.
       contact_name: Your Name

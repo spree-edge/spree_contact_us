@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Spree
-  class SpreeContactUsConfiguration < Preferences::Configuration
+module SpreeContactUs
+  class SpreeContactUsConfiguration < ::Spree::Preferences::Configuration
     preference :use_captcha, :boolean, default: false
     preference :use_honeypot, :boolean, default: false
     preference :recaptcha_public_key, :string

@@ -11,8 +11,12 @@ module SpreeContactUs
       g.test_framework :rspec
     end
 
-    initializer 'spree.spree_contact_us.preferences', after: 'spree.environment' do |_app|
-      Spree::ContactUsConfiguration = Spree::SpreeContactUsConfiguration.new
+    initializer 'spree_contact_us.environment', before: 'spree.environment' do |app|
+      require File.join(File.dirname(__FILE__), '../../app/models/spree_contact_us/spree_contact_us_configuration.rb')
+    end
+
+    initializer 'spree_contact_us.environment', before: :load_config_initializers do |_app|
+      ::Spree::ContactUsConfiguration = ::SpreeContactUs::SpreeContactUsConfiguration.new
     end
 
     def self.activate
