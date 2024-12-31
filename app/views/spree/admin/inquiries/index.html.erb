@@ -1,44 +1,71 @@
-<h1><%= Spree.t("listing_inquiries") %></h1>
-<% if @collection.empty? %>
-  <h4><%= Spree.t(:admin_no_entries_found) %></h4>
-<% else %>
+<% content_for :title do %>
+  <%= "Spree #{Spree.t('administration')}: #{Spree.t(:inquiries, scope: :inquiries)}" %>
+<% end %>
 
-  <h4><%= Spree.t(:admin_header_message) %></h4>
+<% content_for :page_title do %>
+  <%= Spree.t(:inquiries, scope: :inquiries) %>
+<% end %>
 
-  <table class="index">
+<% content_for :table_filter do %>
+  <div data-hook="admin_inquiries_sidebar">
+
+    <%= search_form_for [:admin, @search] do |f| %>
+      <div data-hook="admin_inquiries_index_search" class="row">
+        <div class="col-12 col-lg-6">
+          <div class="form-group">
+            <%= f.label :name_cont, Spree.t(:name) %>
+            <%= f.text_field :name_cont, size: 15, class: "form-control js-quick-search-target js-filterable" %>
+          </div>
+        </div>
+      </div>
+
+      <div data-hook="admin_inquiries_index_search_buttons" class="form-actions">
+        <%= button Spree.t(:search), 'search' %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<%= render partial: 'spree/admin/shared/index_table_options', locals: { collection: @collection } %>
+
+<% if @collection.any? %>
+  <small><%= Spree.t(:admin_header_message) %></small>
+
+  <table class="table" id="inquiries">
     <thead>
       <tr>
-        <th><%= sort_link @search, :inquiry_type, Spree.t("inquiry_type") %></th>
-        <th><%= sort_link @search, :email, Spree.t("from") %></th>
-        <th><%= sort_link @search, :created_at, Spree.t("date") %></th>
-        <th></th>
+        <th><%= sort_link @search, :inquiry_type, Spree.t(:inquiry_type) %></th>
+        <th><%= sort_link @search, :name, Spree.t(:name) %></th>
+        <th><%= sort_link @search, :email, Spree.t(:from) %></th>
+        <th><%= sort_link @search, :message, Spree.t(:message) %></th>
+        <th><%= sort_link @search, :created_at, Spree.t(:date) %></th>
+        <th class="actions"></th>
       </tr>
     </thead>
+
     <tbody>
     <% @collection.each do |inquiry| %>
       <tr id="<%= dom_id inquiry %>">
-        <td><%= link_to (inquiry.inquiry_type.blank? ? Spree.t("inquiry") : inquiry.inquiry_type), object_url(inquiry) %></td>
-        <td><%= mail_to "#{inquiry.name} <#{inquiry.email}>", inquiry.email %></td>
-        <td><%= I18n.l inquiry.created_at %></td>
-        <td>
-          <%= link_to Spree.t(:display), object_url(inquiry) %> &nbsp;
-          <%= link_to_delete inquiry %>
+        <td><%= link_to((inquiry.inquiry_type.blank? ? Spree.t('inquiry') : inquiry.inquiry_type), object_url(inquiry)) %></td>
+
+        <td><%= link_to(inquiry.name, object_url(inquiry)) %></td>
+        <td><%= mail_to("#{inquiry.name} <#{inquiry.email}>", inquiry.email) %></td>
+        <td><%= truncate(inquiry.message, length: 25, separator: ' ') %></td>
+        <td><%= link_to I18n.l(inquiry.created_at, format: :short), 'javascript:void(0)', title: I18n.l(inquiry.created_at) %></td>
+
+        <td class="actions actions-3 text-right" data-hook="admin_inquiries_index_row_actions">
+          <%= link_to_with_icon 'eye-open', nil, object_url(inquiry), no_text: true, class: 'btn btn-primary btn-sm' %>
+          <%= link_to_delete inquiry, no_text: true %>
         </td>
       </tr>
     <% end %>
     </tbody>
   </table>
 
-  <%= paginate @collection %>
+<% else %>
+  <div class="alert alert-info no-objects-found">
+    <%= Spree.t(:no_resource_found, resource: plural_resource_name(Spree::Inquiry)) %>
+  </div>
 <% end %>
 
-<% content_for :sidebar do %>
-<div class="box">
-  <h3><%= Spree.t(:search) %></h3>
-  <%= search_form_for [:admin, @search] do |f| %>
-    <p><%= Spree.t("email") %><br/><%= f.text_field :email_cont, :size=>18 %></p>
-    <p><%= button Spree.t("search") %></p>
-  <% end %>
-</div>
-<% end %>
-
+<%= render partial: 'spree/admin/shared/index_table_options', locals: { collection: @collection } %>

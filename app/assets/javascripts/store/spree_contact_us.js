@@ -1,7 +1,5 @@
-$( function() {
-
-  $('form#new_inquiry').submit( function() {
-    $('#inquiry_client_viewport_size', this).val( $(window).width() +'x'+ $(window).height() )
+$(function() {
+  $(document).ready(function() {
+    $('[name="inquiry[client_viewport_size]"]').val($(window).width() +'x'+ $(window).height());
   })
-
 })
