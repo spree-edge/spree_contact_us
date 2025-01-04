@@ -1,47 +1,70 @@
-<h1><%= Spree.t(:inquiry_settings) %></h1>
-
-<%= form_tag(admin_inquiry_settings_path, :method => :put) do %>
-  <fieldset>
-    <legend><%= Spree.t('honeypot.name') %></legend>
-    <p>
-      <%= Spree.t('honeypot.description') %>
-      <br/>
-      <label><%= Spree.t('honeypot.enable') %>:</label>
-      <%= check_box_tag('captcha[use_honeypot]', "1", Spree::ContactUsConfiguration[:use_honeypot]) %>
-    </p>
-  </fieldset>
-  <fieldset>
-    <legend><%= Spree.t(:recaptcha) %></legend>
-    <p>
-      <a href="http://code.google.com/apis/recaptcha/">reCAPTCHA</a> <%= Spree.t(:recaptcha_description) %>
-      <br/><br/>
-      <label><%= Spree.t(:use_captcha) %>:</label>
-      <%= check_box_tag('captcha[use_captcha]', "1", Spree::ContactUsConfiguration[:use_captcha]) %>
-    </p>
-    <p>
-      <label><%= Spree.t(:recaptcha_public_key) %>:</label>
-      <%= text_field_tag('captcha[recaptcha_public_key]', Spree::ContactUsConfiguration[:recaptcha_public_key]) %>
-      <a href="http://www.google.com/recaptcha/whyrecaptcha"><%= Spree.t(:get_api_key) %></a>
-    </p>
-    <p>
-      <label><%= Spree.t(:recaptcha_private_key) %>:</label>
-      <%= text_field_tag('captcha[recaptcha_private_key]', Spree::ContactUsConfiguration[:recaptcha_private_key]) %>
-    </p>
-    <p>
-      <label><%= Spree.t(:recaptcha_theme) %>:</label>
-      <%= select_tag('captcha[recaptcha_theme]', options_for_select([['red', 'red'],['white','white'],['blackglass','blackglass'],['clean','clean']], [Spree::ContactUsConfiguration[:recaptcha_theme]])) %>
-      <a href="http://code.google.com/apis/recaptcha/docs/customization.html"><%= Spree.t(:view_themes) %></a>
-    </p>
-  </fieldset>
-  <fieldset>
-    <legend><%= Spree.t(:inquiry_types) %></legend>
-    <p>
-      <label><%= Spree.t(:inquiry_types) %></label>
-      <%= text_field_tag('inquiry_types', Spree::ContactUsConfiguration[:inquiry_types].join(', ')) %>
-    </p>
-  </fieldset>
-  <p class="form-buttons">
-    <%= button Spree.t('update') %>
-    <%= Spree.t("or") %> <%= link_to Spree.t("cancel"), admin_inquiry_settings_url %>
-  </p>
+<% content_for :page_title do %>
+  <%= Spree.t(:inquiry_settings) %>
 <% end %>
+<%= form_tag(admin_inquiry_settings_path, method: :put, class: "form-horizontal") do %>
+  <div class="form-section">
+    <fieldset>
+      <legend><%= Spree.t('honeypot.name') %></legend>
+      <div class="form-group">
+        <p><%= Spree.t('honeypot.description') %></p>
+        <div class="checkbox">
+          <label>
+            <%= check_box_tag('captcha[use_honeypot]', "1", Spree::ContactUsConfiguration[:use_honeypot]) %>
+            <%= Spree.t('honeypot.enable') %>
+          </label>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-section">
+    <fieldset>
+      <legend><%= Spree.t(:recaptcha) %></legend>
+      <p>
+        <a href="http://code.google.com/apis/recaptcha/">reCAPTCHA</a> <%= Spree.t(:recaptcha_description) %>
+      </p>
+
+      <div class="form-group">
+        <div class="checkbox">
+          <label>
+            <%= check_box_tag('captcha[use_captcha]', "1", Spree::ContactUsConfiguration[:use_captcha]) %>
+            <%= Spree.t(:enable_captcha) %>
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="recaptcha_public_key"><%= Spree.t(:recaptcha_site_key) %></label>
+        <%= text_field_tag('captcha[recaptcha_public_key]', Spree::ContactUsConfiguration[:recaptcha_public_key], class: "form-control") %>
+        <small><%= Spree.t(:get_api_key) %> <a href="http://www.google.com/recaptcha/whyrecaptcha"><%= Spree.t(:here) %></a></small>
+      </div>
+
+      <div class="form-group">
+        <label for="recaptcha_private_key"><%= Spree.t(:recaptcha_secret_key) %></label>
+        <%= text_field_tag('captcha[recaptcha_private_key]', Spree::ContactUsConfiguration[:recaptcha_private_key], class: "form-control") %>
+      </div>
+
+      <div class="form-group">
+        <label for="recaptcha_theme"><%= Spree.t(:recaptcha_theme) %></label>
+        <%= select_tag('captcha[recaptcha_theme]', options_for_select([['red', 'red'],['white','white'],['blackglass','blackglass'],['clean','clean']], Spree::ContactUsConfiguration[:recaptcha_theme]), class: "form-control") %>
+        <small><%= Spree.t(:view_themes) %> <a href="http://code.google.com/apis/recaptcha/docs/customization.html"><%= Spree.t(:here) %></a></small>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-section">
+    <fieldset>
+      <legend><%= Spree.t(:inquiry_types) %></legend>
+      <div class="form-group">
+        <label for="inquiry_types"><%= Spree.t(:inquiry_types) %></label>
+        <%= text_field_tag('inquiry_types', Spree::ContactUsConfiguration[:inquiry_types].join(', '), class: "form-control") %>
+        <small><%= Spree.t(:enter_multiple_types_separated_by_comma) %></small>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-buttons">
+    <%= submit_tag(Spree.t('update'), class: "btn btn-primary") %>
+    <%= Spree.t("or") %> <%= link_to Spree.t("cancel"), admin_inquiry_settings_url, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+

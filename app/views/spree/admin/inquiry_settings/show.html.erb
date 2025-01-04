@@ -1,30 +1,37 @@
-<h1><%= Spree.t(:inquiry_settings) %></h1>
-<table>
-  <tr>
-    <th scope="row"><%= Spree.t(:use_honeypot) %>:</th>
-    <td><%= Spree::ContactUsConfiguration[:use_honeypot] ? Spree.t('say_yes') : Spree.t('say_no') %></td>
-  </tr>
-  <tr>
-    <th scope="row"><%= Spree.t(:use_captcha) %>:</th>
-    <td><%= Spree::ContactUsConfiguration[:use_captcha] ? Spree.t('say_yes') : Spree.t('say_no') %></td>
-  </tr>
-  <tr>
-    <th scope="row"><%= Spree.t(:recaptcha_public_key) %>:</th>
-    <td><%= Spree::ContactUsConfiguration[:recaptcha_public_key] %></td>
-  </tr>
-  <tr>
-    <th scope="row"><%= Spree.t(:recaptcha_private_key) %>:</th>
-    <td><%= Spree::ContactUsConfiguration[:recaptcha_private_key] %></td>
-  </tr>
-  <tr>
-    <th scope="row"><%= Spree.t(:recaptcha_theme) %>:</th>
-    <td><%= Spree::ContactUsConfiguration[:recaptcha_theme] %></td>
-  </tr>
-  <tr>
-    <th scope="row"><%= Spree.t(:inquiry_types) %>:</th>
-    <td><%= inquiry_types_translated.join(', ') %></td>
-  </tr>
-</table>
-<p>
-  <%= link_to_with_icon('edit', Spree.t("edit"), edit_admin_inquiry_settings_path) %>
-</p>
+<% content_for :page_title do %>
+  <%= Spree.t(:inquiry_settings) %>
+<% end %>
+
+<% content_for :page_actions do %>
+   <%= link_to_with_icon('edit', Spree.t("edit"), edit_admin_inquiry_settings_path, class: "btn btn-primary action-link") %>
+<% end %>
+<div>
+  <table class="table table-bordered">
+    <tbody>
+      <tr>
+        <th scope="row"><%= Spree.t(:use_honeypot) %>:</th>
+        <td><%= Spree::ContactUsConfiguration[:use_honeypot] ? Spree.t('say_yes') : Spree.t('say_no') %></td>
+      </tr>
+      <tr>
+        <th scope="row"><%= Spree.t(:use_captcha) %>:</th>
+        <td><%= Spree::ContactUsConfiguration[:use_captcha] ? Spree.t('say_yes') : Spree.t('say_no') %></td>
+      </tr>
+      <tr>
+        <th scope="row"><%= Spree.t(:recaptcha_site_key) %>:</th>
+        <td><%= Spree::ContactUsConfiguration[:recaptcha_public_key] %></td>
+      </tr>
+      <tr>
+        <th scope="row"><%= Spree.t(:recaptcha_secret_key) %>:</th>
+        <td><%= Spree::ContactUsConfiguration[:recaptcha_private_key] %></td>
+      </tr>
+      <tr>
+        <th scope="row"><%= Spree.t(:recaptcha_theme) %>:</th>
+        <td><%= Spree::ContactUsConfiguration[:recaptcha_theme] %></td>
+      </tr>
+      <tr>
+        <th scope="row"><%= Spree.t(:inquiry_types) %>:</th>
+        <td><%= inquiry_types_translated.join(', ') %></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
