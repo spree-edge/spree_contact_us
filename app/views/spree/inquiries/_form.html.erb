@@ -34,10 +34,16 @@
   <%= f.error_message_on :message %>
 <% end %>
 
-<%= render partial: 'captcha' %>
+<% if Spree::ContactUsConfiguration[:use_honeypot] %>
+  <%= hidden_field_tag :honey %>
+<% end %>
+
+<% if Spree::ContactUsConfiguration[:use_captcha] %>
+  <%= render partial: 'captcha' %>
+<% end %>
 
 <%= f.hidden_field :client_viewport_size %>
 
-<div class="text-right">
-  <%= f.submit Spree.t(:send_inquiry), class: 'btn btn-primary' %>
+<div >
+  <%= f.submit Spree.t(:send_inquiry), class: 'btn btn-primary mb-2' %>
 </div>

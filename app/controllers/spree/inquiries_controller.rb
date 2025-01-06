@@ -2,13 +2,14 @@
 
 module Spree
   class InquiriesController < Spree::StoreController
+    before_action :reload_recaptcha_preferences, only: :new
+
     def new
       @inquiry = Inquiry.new
     end
 
     def create
       @inquiry = Inquiry.new(inquiry_params.merge(extra_params))
-
       if validate_captcha && @inquiry.save
         InquiryMailer.notification(@inquiry).deliver # to submitter
         InquiryMailer.confirmation(@inquiry).deliver # to admin
@@ -32,28 +33,6 @@ module Spree
       }
     end
 
-    def validate_captcha
-      !has_invalid_captcha?
-    end
-
-    def has_invalid_captcha?
-      if use_recaptcha?
-        response = verify_recaptcha(recaptcha_params)
-
-        # the recaptcha plugin inserts this flash message every time regardless of success/failure
-        # spree_contact_us provides error + success notifications, it is safe to delete this
-        flash.delete(:recaptcha_error)
-
-        !response
-      elsif Spree::ContactUsConfiguration[:use_honeypot]
-        flash[:captcha_error] = Spree.t('honeypot.error_message') unless params[:honey].blank?
-      end
-    end
-
-    def use_recaptcha?
-      true
-    end
-
     def recaptcha_params
       {
         model: @inquiry,
@@ -64,6 +43,46 @@ module Spree
 
     def inquiry_params
       params.require(:inquiry).permit(:name, :email, :phone_number, :inquiry_type, :order_no, :message)
+    end
+
+    def validate_captcha
+      captcha_valid = true
+      honeypot_valid = true
+
+      captcha_valid = handle_captcha_validation unless Spree::ContactUsConfiguration[:use_captcha] == false
+
+      honeypot_valid = handle_honeypot_validation unless Spree::ContactUsConfiguration[:use_honeypot] == false
+
+      captcha_valid && honeypot_valid
+    end
+
+    def handle_captcha_validation
+      response = verify_recaptcha(recaptcha_params)
+      unless response
+        flash[:captcha_error] = Spree.t('recaptcha_error_mes')
+        return false
+      end
+      true
+    end
+
+    def handle_honeypot_validation
+      if params[:honey].present?
+        flash[:captcha_error] = Spree.t('honeypot.error_message')
+        return false
+      end
+      true
+    end
+
+    def reload_recaptcha_preferences
+      site_key = Spree::ContactUsConfiguration[:recaptcha_public_key]
+      secret_key = Spree::ContactUsConfiguration[:recaptcha_private_key]
+
+      if site_key.present? && secret_key.present?
+        Recaptcha.configure do |config|
+          config.site_key = site_key
+          config.secret_key = secret_key
+        end
+      end
     end
   end
 end
